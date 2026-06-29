@@ -1,0 +1,249 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String?
+  email         String         @unique
+  password      String
+  role          String         @default("USER") // USER or ADMIN
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  bookings      Booking[]
+  projects      Project[]
+  invoices      Invoice[]
+  notifications Notification[]
+  testimonials  Testimonial[]
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Booking {
+  id           String    @id @default(uuid())
+  customerName String
+  phone        String
+  email        String
+  location     String
+  propertyType String
+  budget       String
+  preferredDate DateTime
+  description  String
+  images       String[]  // Array of image URLs or file paths
+  status       String    @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoices     Invoice[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Project {
+  id             String    @id @default(uuid())
+  title          String
+  description    String
+  category       String
+  images         String[]
+  budget         String?
+  status         String    @default("PLANNING") // PLANNING, DESIGN, CONSTRUCTION, COMPLETED
+  progress       Int       @default(0) // 0-100
+  startDate      DateTime?
+  completionDate DateTime?
+  ownerId        String?
+  owner          User?     @relation(fields: [ownerId], references: [id])
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  icon        String   // Lucide icon name
+  image       String
+  category    String
+  priceRange  String
+  duration    String
+  status      String   @default("ACTIVE") // ACTIVE, INACTIVE
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Blog {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  content     String
+  image       String
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  authorName  String   @default("Admin")
+  tags        String[]
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  blogs     Blog[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Team {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  image     String
+  bio       String?
+  facebook  String?
+  twitter   String?
+  linkedin  String?
+  instagram String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  company   String?
+  comment   String
+  rating    Int      @default(5)
+  image     String?
+  approved  Boolean  @default(false)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FAQ {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String
+  category  String   @default("General")
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Gallery {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  image       String
+  category    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  reply     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Newsletter {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  type      String   @default("INFO") // INFO, BOOKING, PAYMENT, SYSTEM
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Invoice {
+  id            String    @id @default(uuid())
+  invoiceNumber String    @unique
+  bookingId     String?
+  booking       Booking?  @relation(fields: [bookingId], references: [id])
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount        Float
+  status        String    @default("UNPAID") // UNPAID, PAID, OVERDUE
+  dueDate       DateTime
+  paidAt        DateTime?
+  payments      Payment[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Payment {
+  id            String   @id @default(uuid())
+  paymentNumber String   @unique
+  invoiceId     String
+  invoice       Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount        Float
+  method        String   // CARD, BANK, MOCK
+  status        String   @default("PENDING") // SUCCESS, FAILED, PENDING
+  transactionId String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Settings {
+  id          String   @id @default("site-settings")
+  companyName String   @default("Shaanvi Construction")
+  logo        String?
+  email       String   @default("info@shaanviconstruction.com")
+  phone       String   @default("+1 (555) 123-4567")
+  address     String   @default("123 Luxury Ave, Design District, NY 10001")
+  facebook    String?
+  twitter     String?
+  instagram   String?
+  linkedin    String?
+  mapsUrl     String?
+  themeColors String?  // Serialized JSON of colors (primary, secondary, etc.)
+  updatedAt   DateTime @updatedAt
+}
+
+model SEO {
+  id             String   @id @default(uuid())
+  pageRoute      String   @unique // e.g. "/", "/about", etc.
+  title          String
+  description    String
+  keywords       String?
+  canonicalUrl   String?
+  ogImage        String?
+  ogTitle        String?
+  ogDescription  String?
+  twitterCard    String?  @default("summary_large_image")
+  updatedAt      DateTime @updatedAt
+}
