@@ -90,7 +90,7 @@ export function ContactForm() {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Direct Call</p>
-                  <p className="text-base font-bold text-foreground mt-0.5">+1 (800) 555-0199</p>
+                  <p className="text-base font-bold text-foreground mt-0.5">+91 8438523322</p>
                 </div>
               </div>
 
@@ -110,8 +110,12 @@ export function ContactForm() {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Headquarters</p>
-                  <p className="text-base font-bold text-foreground mt-0.5">742 Evergreen Terrace, Springfield, OR 97477</p>
+                  <p className="text-base font-bold text-foreground mt-0.5">Vadiveeswaram, Nagercoil</p>
                 </div>
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Branch Office</p>
+                  <p className="text-base font-bold text-foreground mt-0.5">Chennai, Tamil Nadu</p>
+                </div>                
               </div>
             </div>
           </div>

@@ -141,13 +141,13 @@ export default async function HomePage() {
   let settings: any = {
     companyName: 'Shaanvi Construction',
     email: 'contact@shaanviconstruction.com',
-    phone: '+1 (800) 555-0199',
-    address: '742 Evergreen Terrace, Springfield, OR 97477',
+    phone: '+91 8438523322',
+    address: 'Nagercoil, Tamil Nadu, India',
     facebook: 'https://facebook.com',
     twitter: 'https://twitter.com',
     instagram: 'https://instagram.com',
     linkedin: 'https://linkedin.com',
-    mapsUrl: null,
+    mapsUrl: "https://maps.app.goo.gl/Z9S6hAWNeV9uRHSM6",
   };
 
   try {
