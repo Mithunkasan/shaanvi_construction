@@ -4,8 +4,8 @@ import * as React from 'react';
 import { MessageSquare, Phone } from 'lucide-react';
 
 export function FloatingActions() {
-  const whatsappNumber = '+18005550199'; // default mock number
-  const callNumber = '+18005550199';
+  const whatsappNumber = '+918438523322'; // default mock number
+  const callNumber = '+918438523322';
 
   return (
     <div className="fixed bottom-6 left-6 z-50 flex flex-col space-y-3 pointer-events-auto">
