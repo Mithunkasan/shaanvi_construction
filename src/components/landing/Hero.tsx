@@ -9,12 +9,14 @@ import { Button } from '@/components/ui/button';
 export function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-slate-950">
-      {/* Background Image Slider or Single High-Quality Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 scale-105"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80')`,
-        }}
+      {/* Responsive Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 scale-105 lg:hidden"
+        style={{ backgroundImage: `url('/hero1.jpeg')` }}
+      />
+      <div
+        className="absolute inset-0 hidden bg-cover bg-center bg-no-repeat transition-all duration-1000 scale-105 lg:block"
+        style={{ backgroundImage: `url('/hero.jpeg')` }}
       />
       
       {/* Dark Overlay with glass reflection */}
